@@ -2,7 +2,7 @@
 
 The purpose of the service is to find questions that are as similar as possible to the user's request.
 
-Some requirements and thoughts are placed in [approaches.md]()
+Some requirements and thoughts are placed in [approaches.md](https://github.com/pacifikus/qa_service/blob/main/reference/approach.md)
 
 ### Embedder service
 
@@ -17,7 +17,10 @@ You can find the Swagger docs on http://localhost:5000/apidocs
 
 To create embedding for the sentence "How many Hindu nations are in the world?" you can run command:
 
-`curl -X POST "http://localhost:5000/v1/embedder/generate" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": \"How many Hindu nations are in the world?\"}"`
+```
+curl -X POST "http://localhost:5000/v1/embedder/generate" -H "accept: application/json"\
+-H "Content-Type: application/json" -d "{ \"text\": \"How many Hindu nations are in the world?\"}"
+```
 
 Also, probes are available:
 - /readiness - Readiness check endpoint. Make test response to model.
