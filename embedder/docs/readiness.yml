@@ -1,0 +1,7 @@
+Readiness check endpoint. Make test response to model.
+---
+responses:
+  200:
+    description: returns `Ready` if app works successfully and the model returns a valid generated vector.
+  503:
+    description: returns the error text if any exception occurred.

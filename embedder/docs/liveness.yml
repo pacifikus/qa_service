@@ -1,0 +1,5 @@
+Health check endpoint
+---
+responses:
+  200:
+    description: returns `Ok` if app works successfully.

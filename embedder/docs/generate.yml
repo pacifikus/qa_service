@@ -1,0 +1,17 @@
+Endpoint to generate question embedding.
+---
+parameters:
+  - in: body
+    name: data
+    required: true
+    schema:
+      properties:
+        text:
+          description: user's text
+          type: string
+          example: "How many Hindu nations are in the world?"
+      required:
+        - text
+responses:
+  200:
+    description: Generated embeddings
