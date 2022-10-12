@@ -4,6 +4,17 @@ The purpose of the service is to find questions that are as similar as possible 
 
 Some requirements and thoughts are placed in [approaches.md](https://github.com/pacifikus/qa_service/blob/main/reference/approach.md)
 
+### Clustering 
+
+Subproject for data downloading, EDA, embedding clustering, computing clusters centers.
+
+To run data downloading you can follow commands:
+```commandline
+cd clustering
+python src/data/get_data.py --config_path params.yaml
+```
+You can specify configuration in params.yaml if you need
+
 ### Embedder service
 
 Service to create text embeddings via Tensorflow [Universal Sentence Encoder](https://tfhub.dev/google/universal-sentence-encoder/4)
