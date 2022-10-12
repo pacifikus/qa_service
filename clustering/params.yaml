@@ -1,0 +1,3 @@
+data:
+  so_dataset_url: https://archive.org/download/stackexchange/datascience.stackexchange.com.7z
+  so_dataset_path: data/raw
