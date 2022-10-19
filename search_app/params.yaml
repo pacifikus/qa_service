@@ -1,0 +1,19 @@
+embedder:
+  url: localhost:5000/v1/embedder/generate
+indexing:
+  vector_config_path: config/vector_settings.json
+  elastic:
+    host: localhost
+    https: true
+    index_name: stackoverflow_tensorflow_use
+streamlit:
+  title: StackOverflow QA service
+  local_css_path: css/style.css
+  remote_css_path: https://fonts.googleapis.com/icon?family=Material+Icons
+  icon: search
+  slider:
+    min_value: 5
+    max_value: 20
+    value: 5
+    step: 1
+

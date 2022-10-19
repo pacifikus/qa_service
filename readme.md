@@ -37,3 +37,20 @@ Also, probes are available:
 - /readiness - Readiness check endpoint. Make test response to model.
 - /liveness - Health check endpoint
 
+### Search streamlit app
+
+[Streamlit](https://streamlit.io/) application to find nearest StackOverflow question.
+
+The application needs [ElasticSearch](https://www.elastic.co/) index to search by.
+
+#### ElasticSearch installation
+
+To install ElasticSearch locally in single node mode use:
+```commandline
+docker run --name es01 -p 9200:9200 -p 9300:9300  -e "discovery.type=single-node" -t elasticsearch:8.4.3
+```
+Specify user credentials in .env file and create the index with indexer.py script (____coming soon____).
+
+Run streamlit app with `streamlit run search_app/search_companies.py`
+
+You can modify application params in `search_app/params.yaml` if you need

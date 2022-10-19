@@ -3,3 +3,5 @@
 /models/1/variables/
 /models/1/saved_model.pb
 /models/universal-sentence-encoder_4.tar.gz
+/elastic_client/.env
+/search_app/.env
