@@ -6,3 +6,9 @@ data:
   embeddings_filename: embeddings.pkl
 model:
   model_path: models/use
+indexing:
+  vector_config_path: config/vector_settings.json
+  elastic:
+    host: localhost
+    https: true
+    index_name: stackoverflow_tensorflow_use
