@@ -2,6 +2,12 @@
 
 The purpose of the service is to find questions that are as similar as possible to the user's request.
 
+### High-level architecture
+
+<p align="center">
+  <img src="https://github.com/pacifikus/qa_service/blob/elasticsearch/reference/high-level-diagram.png" width="600" alt="accessibility text">
+</p>
+
 Some requirements and thoughts are placed in [approaches.md](https://github.com/pacifikus/qa_service/blob/main/reference/approach.md)
 
 ### Clustering
