@@ -25,7 +25,19 @@ To run embeddings computing run:
 python src/data/create_embeddings.py --config_path params.yaml
 ```
 
-To create ElasticSearch index with precomputed embeddings run 
+To create ElasticSearch index with precomputed embeddings run
+(you need running ElasticSearch for this step):
+```commandline
+python src/index/indexer_elastic.py --config_path params.yaml
+```
+
+
+To run embeddings computing run:
+```commandline
+python src/data/create_embeddings.py --config_path params.yaml
+```
+
+To create ElasticSearch index with precomputed embeddings run
 (you need running ElasticSearch for this step):
 ```commandline
 python src/index/indexer_elastic.py --config_path params.yaml

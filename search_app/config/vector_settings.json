@@ -15,9 +15,11 @@
         },
         "vector": {
           "type": "dense_vector",
-          "dims": 384
+          "dims": 512
+        },
+        "post_id": {
+          "type": "long"
         }
       }
   }
 }
-

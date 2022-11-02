@@ -16,9 +16,7 @@ def extract_zip(archive_path, target_path):
     """
     with py7zr.SevenZipFile(archive_path, mode="r") as zip_file:
         zip_file.extractall(path=target_path)
-    logger.info(
-        f"Archive {archive_path} has been extracted to {target_path}..."
-    )
+    logger.info(f"Archive {archive_path} has been extracted to {target_path}...")
 
 
 @click.command()
@@ -31,7 +29,8 @@ def extract_zip(archive_path, target_path):
 )
 def download_dataset(config_path):
     """
-    The download_dataset function downloads the Stack Overflow dataset from a URL and saves it to disk.
+    The download_dataset function downloads the Stack Overflow dataset
+    from a URL and saves it to disk.
 
     :param config_path: Specify the path to the configuration file
     """
