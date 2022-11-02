@@ -2,9 +2,15 @@
 
 The purpose of the service is to find questions that are as similar as possible to the user's request.
 
+### High-level architecture
+
+<p align="center">
+  <img src="https://github.com/pacifikus/qa_service/blob/elasticsearch/reference/high-level-diagram.png" width="600" alt="accessibility text">
+</p>
+
 Some requirements and thoughts are placed in [approaches.md](https://github.com/pacifikus/qa_service/blob/main/reference/approach.md)
 
-### Clustering 
+### Clustering
 
 Subproject for data downloading, EDA, embedding clustering, computing clusters centers.
 
@@ -13,6 +19,18 @@ To run data downloading you can follow commands:
 cd clustering
 python src/data/get_data.py --config_path params.yaml
 ```
+
+To run embeddings computing run:
+```commandline
+python src/data/create_embeddings.py --config_path params.yaml
+```
+
+To create ElasticSearch index with precomputed embeddings run 
+(you need running ElasticSearch for this step):
+```commandline
+python src/index/indexer_elastic.py --config_path params.yaml
+```
+
 You can specify configuration in params.yaml if you need
 
 ### Embedder service
@@ -20,7 +38,7 @@ You can specify configuration in params.yaml if you need
 Service to create text embeddings via Tensorflow [Universal Sentence Encoder](https://tfhub.dev/google/universal-sentence-encoder/4)
 
 To manual run embedder service:
-- Unzip [universal-sentence-encoder_4.tar.gz](https://tfhub.dev/google/universal-sentence-encoder/4?tf-hub-format=compressed) to `models/1` 
+- Unzip [universal-sentence-encoder_4.tar.gz](https://tfhub.dev/google/universal-sentence-encoder/4?tf-hub-format=compressed) to `models/1`
 - Build docker image with `docker build -t embedder embedder`
 - Run docker image with `docker run -t -p 5000:5000 -v "{PROJECT_PWD}/models/1:/models/use" -t embedder`
 

@@ -1,3 +1,14 @@
 data:
-  so_dataset_url: https://archive.org/download/stackexchange/datascience.stackexchange.com.7z
+  so_dataset_url: https://archive.org/download/stackexchange/datascience.meta.stackexchange.com.7z #https://archive.org/download/stackexchange/datascience.stackexchange.com.7z
   so_dataset_path: data/raw
+  processed_path: data/processed
+  posts_filename: Posts.xml
+  embeddings_filename: embeddings.pkl
+model:
+  model_path: models/use
+indexing:
+  vector_config_path: config/vector_settings.json
+  elastic:
+    host: localhost
+    https: true
+    index_name: stackoverflow_tensorflow_use
