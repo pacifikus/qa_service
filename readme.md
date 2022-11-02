@@ -2,6 +2,12 @@
 
 The purpose of the service is to find questions that are as similar as possible to the user's request.
 
+### High-level architecture
+
+<p align="center">
+  <img src="https://github.com/pacifikus/qa_service/blob/elasticsearch/reference/high-level-diagram.png" width="600" alt="accessibility text">
+</p>
+
 Some requirements and thoughts are placed in [approaches.md](https://github.com/pacifikus/qa_service/blob/main/reference/approach.md)
 
 ### Clustering
@@ -13,6 +19,18 @@ To run data downloading you can follow commands:
 cd clustering
 python src/data/get_data.py --config_path params.yaml
 ```
+
+To run embeddings computing run:
+```commandline
+python src/data/create_embeddings.py --config_path params.yaml
+```
+
+To create ElasticSearch index with precomputed embeddings run
+(you need running ElasticSearch for this step):
+```commandline
+python src/index/indexer_elastic.py --config_path params.yaml
+```
+
 
 To run embeddings computing run:
 ```commandline
