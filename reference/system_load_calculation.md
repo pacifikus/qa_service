@@ -1,4 +1,4 @@
-### Calculate the load on the system. 
+### Calculate the load on the system.
 
 We will proceed from the following assumptions:
 - 36000 queries per month (DAU - 300, average 4 queries per user per day)

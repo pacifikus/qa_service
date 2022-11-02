@@ -11,7 +11,7 @@
 - Computing of embeddings for all documents
 - Clustering all documents embeddings and computing clusters centers
 - Creation of embeddings indexes
-- Computing question-answer mapping 
+- Computing question-answer mapping
 
 
 ## Online part

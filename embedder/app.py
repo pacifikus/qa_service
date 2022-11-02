@@ -1,8 +1,7 @@
 import tensorflow_hub as hub
-from flask import Flask, jsonify, request
-from flasgger import Swagger, swag_from
 from exceptions import HealthError
-
+from flasgger import Swagger, swag_from
+from flask import Flask, jsonify, request
 
 MODEL_PATH = "models/use"
 embedder = hub.load(MODEL_PATH)
@@ -36,11 +35,11 @@ def readiness_check():
         return "Ready", 200
 
 
-@app.route('/v1/embedder/generate', methods=['POST'])
+@app.route("/v1/embedder/generate", methods=["POST"])
 @swag_from("docs/generate.yml")
 def generate():
     data = request.get_json(force=True)
-    embedding = generate_embedding(data['text'])
+    embedding = generate_embedding(data["text"])
     return jsonify(outputs=[embedding])
 
 
