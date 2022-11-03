@@ -22,8 +22,8 @@ def load_vectors(embeddings_filename):
         vectors = pickle.load(f)
 
     vectors = [
-        {"id": i, "post_id": idx, "title": title, "vector": embedding}
-        for i, idx, title, embedding in enumerate(vectors)
+        {"id": i, "post_id": item[0], "text": item[1], "vector": item[2].numpy()}
+        for i, item in enumerate(vectors)
     ]
     return vectors
 
