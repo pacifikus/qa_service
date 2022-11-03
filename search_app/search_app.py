@@ -25,8 +25,15 @@ elastic_client = ElasticClient(
 def get_query_embedding(input_query):
     input_query = input_query.lower()
     data = {"text": input_query}
-    response = json.loads(requests.post(url=config["embedder_url"], data=data).text)
-    query_vector = response["outputs"]
+    headers = {"Accept": "application/json"}
+    response = json.loads(
+        requests.post(
+            url=config["embedder"]["url"],
+            json=data,
+            headers=headers,
+        ).text
+    )
+    query_vector = response["outputs"][0][0]
     return query_vector
 
 
@@ -44,7 +51,7 @@ def get_query_config(query_vector, docs_count, distance_metric):
         )
     es_query = {
         "size": docs_count,
-        "_source": ["id", "text", "vector"],
+        "_source": ["post_id", "text", "vector"],
         "query": {
             "script_score": {
                 "query": {"match_all": {}},
@@ -84,12 +91,13 @@ def create_scatter_plot(data, labels, size, scores):
 
 
 index = config["indexing"]["elastic"]["index_name"]
+st.set_page_config(layout="wide")
 st.title(config["streamlit"]["title"])
 set_local_css(config["streamlit"]["local_css_path"])
 set_remote_css(config["streamlit"]["remote_css_path"])
 set_icon(config["streamlit"]["icon"])
 
-query = st.text_input("Type your query here", "Bridgestone company")
+query = st.text_input("Type your query here", "How to become ML engineer?")
 button_clicked = st.button("Go")
 n_docs = st.sidebar.slider(
     label="Number of documents to view", **config["streamlit"]["slider"]
@@ -111,8 +119,12 @@ if button_clicked and query != "":
     st.success("Done!")
     st.write(f"Query time: {query_time} ms")
     st.write(f"Found documents: {num_found}")
+
+    base_url = "https://datascience.stackexchange.com/questions/"
     if num_found > 0:
-        df = pd.DataFrame(docs, columns=["id", "text", "_score", "vector"])
+        df = pd.DataFrame(docs, columns=["post_id", "text", "_score", "vector", "url"])
+        urls = [base_url + str(post_id) for post_id in df["post_id"].values.tolist()]
+        df["url"] = urls  # TODO: make clickable hyperlinks in the table
         df["vector"] = df["vector"].apply(lambda x: np.array(x).reshape(1, -1))
         st.table(df.drop(["vector"], axis=1))
         chart_data = pd.DataFrame(df["_score"], columns=["score"])

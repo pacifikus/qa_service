@@ -5,3 +5,5 @@
 /models/universal-sentence-encoder_4.tar.gz
 /elastic_client/.env
 /search_app/.env
+/es.env
+/clustering/.env
