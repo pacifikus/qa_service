@@ -3,10 +3,10 @@ import json
 import numpy as np
 import pandas as pd
 import plotly.express as px
-import requests
 import streamlit as st
 import yaml
 from elastic_client import ElasticClient
+from rcp_client import RpcClient
 from sklearn.decomposition import PCA
 from streamlit_utils import set_icon, set_local_css, set_remote_css
 
@@ -24,16 +24,12 @@ elastic_client = ElasticClient(
 
 def get_query_embedding(input_query):
     input_query = input_query.lower()
-    data = {"text": input_query}
-    headers = {"Accept": "application/json"}
-    response = json.loads(
-        requests.post(
-            url=config["embedder"]["url"],
-            json=data,
-            headers=headers,
-        ).text
+    # data = {"text": input_query}
+    client = RpcClient(
+        host=config["rabbit"]["host"],
+        queue=config["rabbit"]["queue_name"],
     )
-    query_vector = response["outputs"][0][0]
+    query_vector = json.loads(client.call(input_query))["outputs"][0][0]
     return query_vector
 
 

@@ -17,22 +17,15 @@ services:
       retries: 10
 
   embedder:
-    image: pacificus/tf_use_embedder_qa
+    image: pacificus/consumer_embedder_tf_use_qa
     container_name: embedder
     restart: always
     depends_on:
       - rabbit
-    ports:
-      - "5002:5000"
     networks:
       - qa-service
     volumes:
       - ./models/1:/models/use
-    healthcheck:
-      test: curl -s http://embedder:5000/readiness || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 10
 
   elastic:
     image: elasticsearch:8.4.3

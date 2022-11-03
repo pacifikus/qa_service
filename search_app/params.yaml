@@ -6,6 +6,9 @@ indexing:
     host: elastic
     https: true
     index_name: stackoverflow_tensorflow_use
+rabbit:
+  host: rabbitmq
+  queue_name: embedding_queue
 streamlit:
   title: StackOverflow QA service
   local_css_path: css/style.css
