@@ -1,9 +1,9 @@
 embedder:
-  url: localhost:5000/v1/embedder/generate
+  url: http://embedder:5000/v1/embedder/generate
 indexing:
   vector_config_path: config/vector_settings.json
   elastic:
-    host: localhost
+    host: elastic
     https: true
     index_name: stackoverflow_tensorflow_use
 streamlit:
