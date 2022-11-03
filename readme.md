@@ -39,7 +39,7 @@ You can specify configuration in params.yaml if you need
 
 Service to create text embeddings via Tensorflow [Universal Sentence Encoder](https://tfhub.dev/google/universal-sentence-encoder/4)
 
-You can find the Swagger docs on http://localhost:5000/apidocs
+Consume messages from [RabbitMQ](https://www.rabbitmq.com/) queue, and publish reply to the queue via [RPC mode](https://www.rabbitmq.com/tutorials/tutorial-six-python.html).
 
 ### Search streamlit app
 
