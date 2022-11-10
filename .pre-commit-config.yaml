@@ -15,7 +15,7 @@ repos:
     rev: v2.2.1
     hooks:
       - id: codespell
-        exclude: ^.html
+        args: [--skip="*.html"]
 -   repo: https://github.com/PyCQA/isort
     rev: 5.10.1
     hooks:
