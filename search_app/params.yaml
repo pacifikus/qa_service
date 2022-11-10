@@ -1,11 +1,8 @@
-embedder:
-  url: http://embedder:5000/v1/embedder/generate
 indexing:
-  vector_config_path: config/vector_settings.json
   elastic:
-    host: elastic
-    https: true
     index_name: stackoverflow_tensorflow_use
+search_app:
+  url: http://search:5003/find
 streamlit:
   title: StackOverflow QA service
   local_css_path: css/style.css

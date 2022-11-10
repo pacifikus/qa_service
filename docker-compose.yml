@@ -51,9 +51,22 @@ services:
       timeout: 10s
       retries: 10
 
-  search_app:
-    image: pacificus/streamlit_search_app_qa
-    container_name: search_app
+  search:
+    image: pacificus/search_qa
+    container_name: search
+    restart: always
+    depends_on:
+      - rabbit
+      - elastic
+      - embedder
+    ports:
+      - "5003:5003"
+    networks:
+      - qa-service
+
+  streamlit_app:
+    image: pacificus/streamlit_app
+    container_name: streamlit_app
     restart: always
     depends_on:
       - rabbit

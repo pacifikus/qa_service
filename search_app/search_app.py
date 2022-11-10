@@ -6,7 +6,6 @@ import plotly.express as px
 import requests
 import streamlit as st
 import yaml
-from elastic_client import ElasticClient
 from sklearn.decomposition import PCA
 from streamlit_utils import set_icon, set_local_css, set_remote_css
 
@@ -14,56 +13,6 @@ config_path = "params.yaml"
 
 with open(config_path) as conf_file:
     config = yaml.safe_load(conf_file)
-
-elastic_client = ElasticClient(
-    host=config["indexing"]["elastic"]["host"],
-    https=config["indexing"]["elastic"]["https"],
-    config_path=config["indexing"]["vector_config_path"],
-)
-
-
-def get_query_embedding(input_query):
-    input_query = input_query.lower()
-    data = {"text": input_query}
-    headers = {"Accept": "application/json"}
-    response = json.loads(
-        requests.post(
-            url=config["embedder"]["url"],
-            json=data,
-            headers=headers,
-        ).text
-    )
-    query_vector = response["outputs"][0][0]
-    return query_vector
-
-
-def get_query_config(query_vector, docs_count, distance_metric):
-    if distance_metric == "Cosine similarity":
-        distance_metric = "1.0 + cosineSimilarity(params['query_vector'], 'vector')"
-    elif distance_metric == "l1norm":
-        distance_metric = "1 / (1 + l1norm(params.query_vector, 'vector'))"
-    elif distance_metric == "l2norm":
-        distance_metric = "1 / (1 + l2norm(params.query_vector, 'vector'))"
-    else:
-        distance_metric = (
-            "double value = dotProduct(params.query_vector, 'vector');"
-            " return sigmoid(1, Math.E, -value);"
-        )
-    es_query = {
-        "size": docs_count,
-        "_source": ["post_id", "text", "vector"],
-        "query": {
-            "script_score": {
-                "query": {"match_all": {}},
-                "script": {
-                    "source": distance_metric,
-                    "params": {"query_vector": query_vector},
-                },
-            }
-        },
-    }
-
-    return es_query
 
 
 @st.cache
@@ -90,6 +39,29 @@ def create_scatter_plot(data, labels, size, scores):
     st.write(fig)
 
 
+def get_result_from_api(input_query, index_name, n_docs, distance):
+    data = {
+        "query": input_query,
+        "index": index_name,
+        "n_docs": n_docs,
+        "distance": distance,
+    }
+    headers = {"Accept": "application/json"}
+    response = json.loads(
+        requests.post(
+            url=config["search_app"]["url"],
+            json=data,
+            headers=headers,
+        ).text
+    )
+    return (
+        response["docs"],
+        response["query_time"],
+        response["num_found"],
+        response["query_embedding"],
+    )
+
+
 index = config["indexing"]["elastic"]["index_name"]
 st.set_page_config(layout="wide")
 st.title(config["streamlit"]["title"])
@@ -109,12 +81,14 @@ distance = st.sidebar.radio(
 if button_clicked and query != "":
     st.write(f"Index: {index}")
     input_query_text = query
-    query_embedding = get_query_embedding(query)
-    query = get_query_config(
-        query_embedding, docs_count=n_docs, distance_metric=distance
-    )
+
     with st.spinner(text="Searching..."):
-        docs, query_time, num_found = elastic_client.query(index, query)
+        docs, query_time, num_found, query_embedding = get_result_from_api(
+            query,
+            index,
+            n_docs,
+            distance,
+        )
 
     st.success("Done!")
     st.write(f"Query time: {query_time} ms")
