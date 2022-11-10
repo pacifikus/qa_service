@@ -60,3 +60,24 @@ To run all with docker-compose run
 - Create ElasticSearch index with command `python src/index/indexer_elastic.py --config_path params.yaml`
 
 Finally, your search_app service will be deployed on localhost:8501
+
+## Testing
+
+### Load tests
+
+There is load test written with [Locust](https://locust.io/) in the `tests/locustfile.py`.
+To run test follow these steps:
+- install locust with `pip install locust`
+- go to `tests` folder
+- run locust web UI with command `locust`
+- open `http://localhost:8089/` and specify test params (Number of users, Spawn rate, Host with running search server)
+- start swarming
+
+Also, you can run load tests without web UI, see [Locust docs](https://docs.locust.io/en/stable/running-without-web-ui.html#running-without-web-ui)
+
+
+[Here](reference/load_testing_report.html) you can see current load testing result with such hardware configuration:
+
+- CPU: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz   2.59 GHz
+- RAM: 16 GB
+- System disk space: 20 GB
