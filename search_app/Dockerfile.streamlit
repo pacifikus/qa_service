@@ -1,0 +1,16 @@
+FROM python:3.9-slim
+
+EXPOSE 8501
+
+WORKDIR /app
+
+COPY requirements-streamlit.txt .
+RUN pip install --no-cache-dir --upgrade -r requirements-streamlit.txt
+
+COPY streamlit_utils.py .
+COPY search_app.py .
+COPY streamlit_utils.py .
+COPY params.yaml .
+COPY css/ css/
+
+ENTRYPOINT ["streamlit", "run", "search_app.py", "--server.port=8501", "--server.address=0.0.0.0"]

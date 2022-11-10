@@ -7,3 +7,4 @@
 /search_app/.env
 /es.env
 /clustering/.env
+/search_app/search_server/.env
