@@ -36,4 +36,4 @@ repos:
         args:
           - "--max-line-length=88"
           - "--max-complexity=18"
-          - "--ignore=S403,S301,S101,S104"
+          - "--ignore=S403,S301,S101,S104,S311"
