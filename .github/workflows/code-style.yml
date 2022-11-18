@@ -20,6 +20,6 @@ jobs:
         pip install pylint black flake8 isort
     - name: Analysing the code with linters
       run: |
-        black .
+        black --line-length=88 .
         flake8 .
         isort .
