@@ -1,5 +1,7 @@
 # Q&A service
 
+[![Code style](https://github.com/pacifikus/qa_service/actions/workflows/code-style.yml/badge.svg)](https://github.com/pacifikus/qa_service/actions/workflows/code-style.yml)
+
 The purpose of the service is to find questions that are as similar as possible to the user's request.
 
 ## High-level architecture
