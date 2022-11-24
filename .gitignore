@@ -8,3 +8,4 @@
 /es.env
 /clustering/.env
 /search_app/search_server/.env
+/tg_bot/.env
