@@ -1,9 +1,13 @@
+import json
 import os
 from dataclasses import dataclass
 from typing import List
 
+import pandas as pd
 import prettytable as pt
+import requests
 import telebot
+import yaml
 from dotenv import load_dotenv
 from telebot import types
 
@@ -11,41 +15,72 @@ load_dotenv()
 
 tg_token = os.getenv("TG_TOKEN")
 bot = telebot.TeleBot(tg_token)
+base_url = "https://datascience.stackexchange.com/questions/"
+config_path = "params.yaml"
+
+with open(config_path) as conf_file:
+    config = yaml.safe_load(conf_file)
 
 
 @dataclass
 class TableRow:
     question: str
+    score: float
     url: str
 
 
+def get_result_from_api(input_query, index_name, n_docs, distance):
+    data = {
+        "query": input_query,
+        "index": index_name,
+        "n_docs": n_docs,
+        "distance": distance,
+    }
+    headers = {"Accept": "application/json"}
+    response = json.loads(
+        requests.post(
+            url=config["search_app"]["url"],
+            json=data,
+            headers=headers,
+        ).text
+    )
+    return (
+        response["docs"],
+        response["query_time"],
+        response["num_found"],
+        response["query_embedding"],
+    )
+
+
 def start_search(text):
-    return [
-        TableRow(
-            "PLS-DA on sklearn: correlated features",
-            "https://datascience.stackexchange.com/questions/70312/"
-            "pls-da-on-sklearn-correlated-features",
-        ),
-        TableRow(
-            "Lasso regression / SVM convergence CPU -> GPU",
-            "https://datascience.stackexchange.com/questions/116258/"
-            "lasso-regression-svm-convergence-cpu-gpu",
-        ),
-        TableRow(
-            "Normalize predictors in random forest",
-            "https://datascience.stackexchange.com/questions/116272/"
-            "normalize-predictors-in-random-forest",
-        ),
-    ]
+    docs, query_time, num_found, query_embedding = get_result_from_api(
+        text,
+        config["indexing"]["elastic"]["index_name"],
+        5,
+        "Cosine similarity",
+    )
+    if num_found > 0:
+        df = pd.DataFrame(docs, columns=["post_id", "text", "_score", "vector", "url"])
+        urls = [base_url + str(post_id) for post_id in df["post_id"].values.tolist()]
+        df["url"] = urls
+        result = []
+        for _, row in df.iterrows():
+            result.append(
+                TableRow(row["text"], row["_score"], row["url"]),
+            )
+        return result
+    return "I can't find anything :с Try again, please"
 
 
 def format_answer(data: List[TableRow]):
-    table = pt.PrettyTable(["Result"])
+    table = pt.PrettyTable(["Result", "Score"])
     table.align["Result"] = "c"
+    table.align["Score"] = "c"
 
     for item in data:
-        table.add_row([item.question])
-        table.add_row([item.url + "\n"])
+        table.add_row([f"{item.question}\n{item.url}\n", item.score])
+        # table.add_row([item.score])
+        # table.add_row([item.url + "\n"])
 
     return f"```{table}```"
 
@@ -66,7 +101,10 @@ def handle_item_name(message: types.Message):
 
 def callback_worker(message: types.Message):
     data = start_search(message.text)
-    answer = format_answer(data)
+    if type(data) != str:
+        answer = format_answer(data)
+    else:
+        answer = data
     message = bot.send_message(
         message.from_user.id,
         text=answer,

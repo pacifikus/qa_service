@@ -1,0 +1,5 @@
+indexing:
+  elastic:
+    index_name: stackoverflow_tensorflow_use
+search_app:
+  url: http://search:5003/find #http://localhost:5003/find
