@@ -79,14 +79,12 @@ def format_answer(data: List[TableRow]):
 
     for item in data:
         table.add_row([f"{item.question}\n{item.url}\n", item.score])
-        # table.add_row([item.score])
-        # table.add_row([item.url + "\n"])
 
     return f"```{table}```"
 
 
 @bot.message_handler(content_types=["text"], commands=["start"])
-def handle_item_name(message: types.Message):
+def handle_start_message(message: types.Message):
     text = (
         "Hello! I'm ML QA bot.\nType your question about Data Science"
         " here and I'll try to find similar questions with answers"
